@@ -11,7 +11,11 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http
-      .post<User>('/api/login', { email, password })
+      .post<User>(
+        'http://localhost:3000/api/login',
+        { email, password },
+        { withCredentials: true }
+      )
       .pipe(shareReplay());
   }
 }

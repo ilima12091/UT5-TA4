@@ -8,11 +8,16 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cookieParser());
 
 const RSA_PRIVATE_KEY = fs.readFileSync("./private.key", "utf8");
 
@@ -33,7 +38,10 @@ app.post("/api/login", (req, res) => {
       expiresIn: 120,
       subject: userId,
     });
-    res.cookie("SESSIONID", jwtBearerToken, { httpOnly: false, secure: false });
+    res.cookie("SESSIONID", jwtBearerToken, {
+      httpOnly: false,
+      secure: false,
+    });
     res.send({
       message: "Cookie Set",
     });
