@@ -18,4 +18,14 @@ export class AuthService {
       )
       .pipe(shareReplay());
   }
+
+  validate(){
+    return this.http
+    .get<User>(
+      'http://localhost:3000/api/validate',  
+      { withCredentials: true }
+    )
+    .pipe(shareReplay());
+
+  }
 }

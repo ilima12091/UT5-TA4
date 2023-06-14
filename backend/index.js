@@ -35,7 +35,7 @@ app.post("/api/login", (req, res) => {
     const userId = findUserIdForEmail(email);
     const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
       algorithm: "RS256",
-      expiresIn: 120,
+      expiresIn: 10,
       subject: userId,
     });
     res.cookie("SESSIONID", jwtBearerToken, {
@@ -49,6 +49,29 @@ app.post("/api/login", (req, res) => {
     res.status(401).send();
   }
 });
+
+app.get("/api/validate",(req,res)=>{
+
+  const token = req.cookies.SESSIONID;
+  //console.log(req.cookies);
+  if(!token){
+    res.status(401).send();
+  }
+  const tokendecode = jwt.decode(token,{
+    algorithm: "RS256",
+});
+console.log(tokendecode.exp*1000);
+console.log(Date.now());
+
+if(tokendecode.exp*1000 > Date.now()){
+  res.json("No expiro");  
+   
+}else{
+  
+  res.status(401).send();
+}
+  
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

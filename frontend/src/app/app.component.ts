@@ -19,6 +19,7 @@ import { AuthService } from './auth-service.service';
     </fieldset>
     <div class="form-buttons">
       <button class="button button-primary" (click)="login()">Login</button>
+      <button class="button button-primary" (click)="validate()">Validate</button>
     </div>
   </form>`,
 })
@@ -45,5 +46,12 @@ export class AppComponent {
         this.router.navigateByUrl('/');
       });
     }
+  }
+
+  validate() {
+    this.authService.validate().subscribe((data) => {
+      console.log('Validated',data);
+    });
+  
   }
 }
